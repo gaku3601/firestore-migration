@@ -1,0 +1,36 @@
+{
+  "name": "firestore-migration",
+  "version": "1.0.2",
+  "description": "firestore migration command tool.",
+  "main": "index.js",
+  "bin": {
+    "fsmigrate": "./bin/fsmigrate.js"
+  },
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaku3601/firestore-migration.git"
+  },
+  "author": "gaku <pro.gaku@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gaku3601/firestore-migration/issues"
+  },
+  "keywords": [
+    "firestore",
+    "migration"
+  ],
+  "homepage": "https://github.com/gaku3601/firestore-migration#readme",
+  "devDependencies": {
+    "@types/node": "^12.0.0",
+    "commander": "^2.20.0",
+    "ts-loader": "^6.0.0",
+    "tslint": "^5.12.0",
+    "typescript": "^3.4.5",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
