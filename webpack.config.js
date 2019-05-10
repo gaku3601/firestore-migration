@@ -20,7 +20,11 @@ module.exports = {
           test: /\.ts$/,
           use: ['ts-loader'],
           exclude: /node_modules/
-        }
+        },
+        {
+          test: /\.tmp$/i,
+          use: 'raw-loader',
+        },
       ]
     },
     resolve: {

@@ -1,0 +1,3 @@
+module.exports.migrate = () => {
+   console.log('test');
+};
