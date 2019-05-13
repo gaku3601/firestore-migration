@@ -1,10 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import firestore from './firestore';
 export default () => {
     const fileList = readFiles();
     if (fileList === []) {
         return;
     }
+    const f = new firestore();
+    f.add();
 };
 
 // ファイル読み込みを実施する
