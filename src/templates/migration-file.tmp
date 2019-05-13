@@ -1,6 +1,6 @@
 {
    "method": "ADD",
-   "collection": "/path/to/collection",
+   "collection": "collectionName",
    "params": [
       {"name": "propA", "value": "propB"},
       {"name": "propC", "value": "propD"}
