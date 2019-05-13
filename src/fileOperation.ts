@@ -3,7 +3,9 @@ import * as path from 'path';
 import migration from './migration';
 export default class {
     private fileList: migration[] = [];
-    constructor() {
+    private dirPath: string;
+    constructor(dirPath: string) {
+      this.dirPath = path.join(process.cwd(), dirPath);
       this.readFilePath();
       if (this.fileList === []) {
           return;
@@ -17,17 +19,12 @@ export default class {
     }
     // ファイル読み込みを実施する
     private readFilePath = () => {
-        const migrationDir = process.env.FS_DIR;
-        if (!migrationDir) {
-            console.log('環境変数FS_DIRを設定してください。');
-            return;
-        }
-        // migrationフォルダからファイル一覧を取得
-        fs.readdirSync(migrationDir).forEach((file: string) => {
+        // フォルダからファイル一覧を取得
+        fs.readdirSync(this.dirPath).forEach((file: string) => {
           if (path.extname(file) !== '.json') {
               return;
           }
-          const filePath = path.join(migrationDir, file);
+          const filePath = path.join(this.dirPath, file);
           const jsonObject = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           this.fileList.push(new migration(file.slice(0, 17), filePath, jsonObject));
         });

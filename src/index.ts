@@ -6,7 +6,7 @@ commanders
   .version('0.0.1', '-v, --version')
   .option('-t, --test', 'test option')
   .option('-c, --create <FileName>', 'create option')
-  .option('-m, --migrate', 'migration!')
+  .option('-m, --migrate <DirPath>', 'migration!')
   .parse(process.argv);
 const createFile = async () => {
   const tmp = await import('./templates/migration-file.tmp');
@@ -23,6 +23,6 @@ if (commanders.create) {
   createFile();
 }
 if (commanders.migrate) {
-  const f = new fileOperation();
+  const f = new fileOperation(commanders.opts().migrate);
   f.processing();
 }
