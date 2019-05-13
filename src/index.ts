@@ -1,7 +1,7 @@
 import * as commanders from 'commander';
 import * as fs from 'fs';
 import * as moment from 'moment';
-import migration from './migration';
+import fileOperation from './fileOperation';
 commanders
   .version('0.0.1', '-v, --version')
   .option('-t, --test', 'test option')
@@ -23,5 +23,6 @@ if (commanders.create) {
   createFile();
 }
 if (commanders.migrate) {
-  migration();
+  const f = new fileOperation();
+  f.processing();
 }

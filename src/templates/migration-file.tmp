@@ -1,6 +1,6 @@
 {
    "method": "ADD",
-   "path": "/path/to/collection",
+   "collection": "/path/to/collection",
    "params": [
       {"flg": true},
       {"flg2": false}
