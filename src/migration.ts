@@ -13,6 +13,9 @@ export default class {
         if (this.content.method === 'ADD') {
             f.add(this.content.collection, this.content.params);
         }
+        if (this.content.method === 'DEL') {
+            f.del(this.content.collection, this.content.params);
+        }
     }
     get Date(): string {
         return this.date;

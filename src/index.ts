@@ -8,7 +8,7 @@ commanders
   .option('-m, --migrate <DirPath>', 'migration!')
   .parse(process.argv);
 if (commanders.create) {
-  const c = new createMigration()
+  const c = new createMigration();
   c.createFile(commanders.opts().create);
 }
 if (commanders.migrate) {
