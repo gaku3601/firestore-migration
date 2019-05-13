@@ -56,7 +56,18 @@ migration -cで生成したファイルからmigrationを実施します。
 ```
 
 ### Field Delete
-未実装。そのうち実装予定
+対象コレクションのフィールド削除を行う場合、以下のように記述します。
+
+```
+{
+   "method": "DEL",
+   "collection": "tests",
+   "params": [
+      {"name": "propA"},
+      {"name": "propB"}
+   ]
+}
+```
 
 ### Field Modify
 未実装。そのうち実装予定
