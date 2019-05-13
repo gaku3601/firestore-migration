@@ -1,3 +1,4 @@
+import firestore from './firestore';
 export default class {
     private date!: string;
     private path!: string;
@@ -6,6 +7,12 @@ export default class {
         this.date = date;
         this.path = path;
         this.content = content;
+    }
+    public execute() {
+        const f = new firestore();
+        if (this.content.method === 'ADD') {
+            f.add(this.content.collection, this.content.params);
+        }
     }
     get Date(): string {
         return this.date;

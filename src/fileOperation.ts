@@ -11,8 +11,8 @@ export default class {
     }
     // 処理を実施する
     public processing = () => {
-        this.fileList.map((data: migration) => {
-            console.log(data.Content.params);
+        this.fileList.forEach((v: migration) => {
+            v.execute();
         });
     }
     // ファイル読み込みを実施する

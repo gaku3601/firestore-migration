@@ -2,7 +2,7 @@
    "method": "ADD",
    "collection": "/path/to/collection",
    "params": [
-      {"flg": true},
-      {"flg2": false}
+      {"name": "propA", "value": "propB"},
+      {"name": "propC", "value": "propD"}
    ]
 }
