@@ -1,21 +1,33 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as moment from 'moment';
 import migration from './migration';
 export default class {
     private fileList: migration[] = [];
-    private dirPath: string;
-    constructor(dirPath: string) {
-      this.dirPath = path.join(process.cwd(), dirPath);
-      this.readFilePath();
-      if (this.fileList === []) {
-          return;
-      }
-    }
+    private dirPath: string = '';
+
     // 処理を実施する
-    public processing = () => {
+    public migrate = (dirPath: string) => {
+        this.dirPath = path.join(process.cwd(), dirPath);
+        this.readFilePath();
+        if (this.fileList === []) {
+            return;
+        }
         this.fileList.forEach((v: migration) => {
             v.execute();
         });
+    }
+
+    // migration fileを作成します。
+    public createFile = async (fileName: string) => {
+      const tmp = await import('./templates/migration-file.tmp');
+      const date: string = moment().format('YYYYMMDDHHmmssSSS');
+      fs.writeFile(`${date}_${fileName}.json`, tmp.default, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log('complete');
+      });
     }
     // ファイル読み込みを実施する
     private readFilePath = () => {
