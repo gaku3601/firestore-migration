@@ -106,3 +106,14 @@ Field名の変更を実施する場合、以下のように記述します。
    ]
 }
 ```
+
+## Delete Collection
+Collecitonの削除処理を実施します。  
+なお、サブコレクションまでは削除されませんのでご注意ください。  
+
+```
+{
+   "method": "DELETE_COLLECTION",
+   "collection": "test"
+}
+```

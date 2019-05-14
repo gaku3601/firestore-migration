@@ -26,6 +26,9 @@ export default class {
         if (this.content.method === 'CHANGE_FIELD_NAME') {
             await f.changeFieldName(this.content.collection, this.content.params);
         }
+        if (this.content.method === 'DELETE_COLLECTION') {
+            await f.deleteCollection(this.content.collection);
+        }
     }
     get Date(): string {
         return this.version;

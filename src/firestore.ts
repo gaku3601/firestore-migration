@@ -41,6 +41,13 @@ export default class {
     });
   }
 
+  // collectionの削除を行います。
+  public async deleteCollection(collection: string) {
+    const batchSize: number = 500;
+    const ref = admin.firestore().collectionGroup(collection);
+    await this.deleteQueryBatch(ref, batchSize);
+  }
+
   // migrationバージョンを適用済みかチェックし、未適用の場合、firestoreに保存を実施する
   public async checkMigrateVersion(version: string): Promise<boolean> {
     const data = await admin.firestore().collection('migrations').get();
@@ -125,5 +132,33 @@ export default class {
     });
     // tslint:disable-next-line
     return eval(str) as boolean;
+  }
+
+  // コレクション削除処理
+  private async deleteQueryBatch(query: FirebaseFirestore.Query, batchSize: number) {
+    await query.limit(batchSize).get()
+      .then((snapshot) => {
+        // When there are no documents left, we are done
+        if (snapshot.size === 0) {
+          return 0;
+        }
+
+        // Delete documents in a batch
+        const batch = admin.firestore().batch();
+        snapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        return batch.commit().then(() => {
+          return snapshot.size;
+        });
+      }).then((numDeleted) => {
+        if (numDeleted === 0) {
+          return;
+        }
+        process.nextTick(() => {
+          this.deleteQueryBatch(query, batchSize);
+        });
+      });
   }
 }
