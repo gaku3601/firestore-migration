@@ -70,7 +70,21 @@ migration -cで生成したファイルからmigrationを実施します。
 ```
 
 ### Field Modify
-未実装。そのうち実装予定
+コレクション内の対象フィールドの内容を変更する場合、以下のように記述します。
+
+```
+{
+   "method": "MOD",
+   "collection": "tests",
+   "params": [
+      {"name": "propA", "if":"{propA} === 2 && {propC} === 'val2'","value": 1}, // *1
+      {"name": "propC", "value": "val"} //*2
+   ]
+}
+[補足]
+*1 if内では'{field名}'で現在格納されているfield内容を取得し、条件式を記述できます。trueの場合、value値を適用します。
+*2 強制的にfieldの値をvalue値で上書きします。fieldが存在しない場合、valの値で新たにfieldを作成します。
+```
 
 # 注意事項
 現状、実装段階です。決して本番環境等では利用しないでください。

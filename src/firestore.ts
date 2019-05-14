@@ -20,6 +20,17 @@ export default class {
     });
   }
 
+  // fieldの修正処理
+  public async mod(collection: string, params: Param[]) {
+    const data = await admin.firestore().collectionGroup(collection).get();
+    data.docs.map(async (x: FirebaseFirestore.QueryDocumentSnapshot) => {
+      const list = this.convertModDataToFirestore(x.data(), params);
+      if (Object.keys(list).length !== 0) {
+        await admin.firestore().doc(x.ref.path).update(list);
+      }
+    });
+  }
+
   private settingKey() {
     const key = process.env.FS_KEY;
     if (!key) {
@@ -50,5 +61,30 @@ export default class {
       list[x.name] = admin.firestore.FieldValue.delete();
     });
     return list;
+  }
+
+  // firestoreに格納できる形でdelldataを加工する
+  private convertModDataToFirestore(data: FirebaseFirestore.DocumentData, params: Param[]): {[key: string]: any} {
+    const list: {[key: string]: any} = {};
+    params.forEach((x: Param) => {
+      if (Boolean(x.if) && this.checkIfExp(data, x.if)) {
+        list[x.name] = x.value;
+      } else if (!Boolean(x.if)) {
+        list[x.name] = x.value;
+      }
+    });
+    return list;
+  }
+
+  // paramのifを評価する
+  private checkIfExp(data: FirebaseFirestore.DocumentData, ifstr: string): boolean {
+    const str = ifstr.replace(/\{(.*?)\}/g, (_, key) => {
+      if (typeof data[key] === 'string') {
+        return `'${data[key]}'`;
+      }
+      return data[key];
+    });
+    // tslint:disable-next-line
+    return eval(str) as boolean;
   }
 }

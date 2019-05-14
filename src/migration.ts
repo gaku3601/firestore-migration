@@ -16,6 +16,9 @@ export default class {
         if (this.content.method === 'DEL') {
             f.del(this.content.collection, this.content.params);
         }
+        if (this.content.method === 'MOD') {
+            f.mod(this.content.collection, this.content.params);
+        }
     }
     get Date(): string {
         return this.date;

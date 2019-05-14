@@ -9,5 +9,6 @@ interface JsonRes {
 
 interface Param {
   name: string;
+  if: string;
   value: any;
 }
