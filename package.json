@@ -1,6 +1,6 @@
 {
   "name": "firestore-migration",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "firestore migration command tool.",
   "main": "index.js",
   "bin": {
