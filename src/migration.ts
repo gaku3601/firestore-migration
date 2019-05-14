@@ -19,6 +19,9 @@ export default class {
         if (this.content.method === 'MOD') {
             f.mod(this.content.collection, this.content.params);
         }
+        if (this.content.method === 'CHANGE_FIELD_NAME') {
+            f.changeFieldName(this.content.collection, this.content.params);
+        }
     }
     get Date(): string {
         return this.date;

@@ -1,3 +1,6 @@
+# 注意事項
+現状、実装段階です。決して本番環境等では利用しないでください。
+
 # firestore-migration
 これはfirestoreのdatabaseをmigrationするためのcomman lineツールです。  
 
@@ -28,7 +31,7 @@ or
 yarn global add firestore-migration
 ```
 
-## 使い方
+# 使い方
 
 ```
 fsmigrate -c [ファイル名]
@@ -40,8 +43,8 @@ fsmigrate -m
 ```
 migration -cで生成したファイルからmigrationを実施します。
 
-## ファイルの記述方法
-### Field Add
+# ファイルの記述方法
+## Field Add
 対象コレクションへのフィールドの追加を行う場合、以下のように記述します。  
 
 ```
@@ -55,7 +58,7 @@ migration -cで生成したファイルからmigrationを実施します。
 }
 ```
 
-### Field Delete
+## Field Delete
 対象コレクションのフィールド削除を行う場合、以下のように記述します。
 
 ```
@@ -69,7 +72,7 @@ migration -cで生成したファイルからmigrationを実施します。
 }
 ```
 
-### Field Modify
+## Field Modify
 コレクション内の対象フィールドの内容を変更する場合、以下のように記述します。
 
 ```
@@ -86,5 +89,16 @@ migration -cで生成したファイルからmigrationを実施します。
 *2 強制的にfieldの値をvalue値で上書きします。fieldが存在しない場合、valの値で新たにfieldを作成します。
 ```
 
-# 注意事項
-現状、実装段階です。決して本番環境等では利用しないでください。
+## Change Field Name
+Field名の変更を実施する場合、以下のように記述します。
+
+```
+{
+   "method": "CHANGE_FIELD_NAME",
+   "collection": "user",
+   "params": [
+      {"name": "name", "to": "nickname"},
+      {"name": "age", "to": "tosi"}
+   ]
+}
+```
