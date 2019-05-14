@@ -4,12 +4,16 @@
 # firestore-migration
 これはfirestoreのdatabaseをmigrationするためのcomman lineツールです。  
 
+# 仕組み[バージョンの管理について]
+このツールを利用すると、初回に「migrations」というcollectionがrootに作成されます。  
+このcollectionでmigrationのバージョン管理を行っております。  
+collection内のdocumentIDとmigrationファイル「version_file名.json」のversionを比較し、versionが存在しなかった場合、対象のmigrationファイルを実行するというロジックで制作しています。  
+
 # 設定方法
 ## 環境変数
 環境変数として以下を設定してください。  
 
 ```
-$FS_DIR: migration fileを格納するフォルダのパス  
 $FS_KEY: gcpのサービスアカウントkey(json)をBase64でdecodeした文字列
 ```
 
@@ -36,10 +40,10 @@ yarn global add firestore-migration
 ```
 fsmigrate -c [ファイル名]
 ```
-このコマンドでmigrationを行うためのファイルを生成します。FS_DIR環境変数で設定したフォルダに格納してください。
+このコマンドでmigrationを行うためのファイルを生成します。
 
 ```
-fsmigrate -m
+fsmigrate -m [スクリプト格納フォルダパス]
 ```
 migration -cで生成したファイルからmigrationを実施します。
 

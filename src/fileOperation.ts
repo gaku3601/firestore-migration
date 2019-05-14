@@ -13,8 +13,8 @@ export default class {
         if (this.fileList === []) {
             return;
         }
-        this.fileList.forEach((v: migration) => {
-            v.execute();
+        this.fileList.forEach(async (v: migration) => {
+            await v.execute();
         });
     }
 

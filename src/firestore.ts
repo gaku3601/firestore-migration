@@ -41,6 +41,22 @@ export default class {
     });
   }
 
+  // migrationバージョンを適用済みかチェックし、未適用の場合、firestoreに保存を実施する
+  public async checkMigrateVersion(version: string): Promise<boolean> {
+    const data = await admin.firestore().collection('migrations').get();
+    if (data.docs.length === 0) {
+      await admin.firestore().collection('migrations').doc(version).set({});
+      return false;
+    }
+    const flg = data.docs.some((x: FirebaseFirestore.QueryDocumentSnapshot): boolean => {
+      return version === x.id;
+    });
+    if (!flg) {
+      await admin.firestore().collection('migrations').doc(version).set({});
+    }
+    return flg;
+  }
+
   private settingKey() {
     const key = process.env.FS_KEY;
     if (!key) {

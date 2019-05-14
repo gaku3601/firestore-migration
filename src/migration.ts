@@ -1,44 +1,39 @@
 import firestore from './firestore';
 export default class {
-    private date!: string;
+    private version!: string;
     private path!: string;
     private content!: JsonRes;
-    constructor(date: string, path: string, content: JsonRes) {
-        this.date = date;
+    constructor(version: string, path: string, content: JsonRes) {
+        this.version = version;
         this.path = path;
         this.content = content;
     }
-    public execute() {
+    public async execute() {
         const f = new firestore();
+        const flg = await f.checkMigrateVersion(this.version);
+        if (flg) {
+            return;
+        }
         if (this.content.method === 'ADD') {
-            f.add(this.content.collection, this.content.params);
+            await f.add(this.content.collection, this.content.params);
         }
         if (this.content.method === 'DEL') {
-            f.del(this.content.collection, this.content.params);
+            await f.del(this.content.collection, this.content.params);
         }
         if (this.content.method === 'MOD') {
-            f.mod(this.content.collection, this.content.params);
+            await f.mod(this.content.collection, this.content.params);
         }
         if (this.content.method === 'CHANGE_FIELD_NAME') {
-            f.changeFieldName(this.content.collection, this.content.params);
+            await f.changeFieldName(this.content.collection, this.content.params);
         }
     }
     get Date(): string {
-        return this.date;
-    }
-    set Date(date: string) {
-        this.date = date;
+        return this.version;
     }
     get Path(): string {
         return this.path;
     }
-    set Path(path: string) {
-        this.path = path;
-    }
     get Content(): JsonRes {
         return this.content;
-    }
-    set Content(content: JsonRes) {
-        this.content = content;
     }
 }
