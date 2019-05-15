@@ -118,7 +118,7 @@ Collecitonの削除処理を実施します。
 }
 ```
 
-## Aggrigate Collection
+## Aggrigate Store Collection
 集計処理を実施します。
 例えば以下のようなデータがあり、
 
@@ -151,7 +151,7 @@ user
 ifプロパティで条件を指定することができ、{aggCollectionのフィールド}で値を取得することができます。  
 また、$IDと記述することで、collectionで指定したコレクションのdocumentIDを取得します。  
 
-## Countup Collection
+## Countup Store Collection
 対象のdocument数を集計し格納します。
 
 ```
