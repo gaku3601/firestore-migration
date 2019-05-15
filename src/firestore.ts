@@ -41,6 +41,64 @@ export default class {
     });
   }
 
+  // documentを集計し値を格納する処理
+  public async aggregateCollection(collection: string, params: Param[]) {
+    const data = await admin.firestore().collectionGroup(collection).get();
+    for (const v of params) {
+      const aggData = await admin.firestore().collectionGroup(v.aggCollection).get();
+      for (const d of data.docs) {
+        const value: number = aggData.docs.filter((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+          // if部分の加工(文字列でコードの実装)
+          const ifstr = v.if.replace(/\{(.*?)\}/g, (_, key) => {
+            return `x.data().${key}`;
+          }).replace(/\$ID/g, `d.id`);
+          // tslint:disable-next-line
+          return eval(ifstr);
+        }).map((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+          // フィールドが存在しない場合,0を返却
+          if (!x.data()[v.aggField]) {
+            return 0;
+          }
+          return x.data()[v.aggField];
+        }).reduce((pre: number, cur: number) => {
+          return pre + cur;
+        }, 0);
+
+        // 書き込みデータの作成
+        const list: {[key: string]: any} = {};
+        list[v.name] = value;
+
+        // 書き込み
+        await admin.firestore().doc(d.ref.path).update(list);
+      }
+    }
+  }
+
+  // documentをカウントアップし値を格納する処理
+  public async countupCollection(collection: string, params: Param[]) {
+    const data = await admin.firestore().collectionGroup(collection).get();
+    for (const v of params) {
+      const aggData = await admin.firestore().collectionGroup(v.aggCollection).get();
+      for (const d of data.docs) {
+        const count = aggData.docs.filter((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+          // if部分の加工(文字列でコードの実装)
+          const ifstr = v.if.replace(/\{(.*?)\}/g, (_, key) => {
+            return `x.data().${key}`;
+          }).replace(/\$ID/g, `d.id`);
+          // tslint:disable-next-line
+          return eval(ifstr)
+        }).length;
+
+        // 書き込みデータの作成
+        const list: {[key: string]: any} = {};
+        list[v.name] = count;
+
+        // 書き込み
+        await admin.firestore().doc(d.ref.path).update(list);
+      }
+    }
+  }
+
   // collectionの削除を行います。
   public async deleteCollection(collection: string) {
     const batchSize: number = 500;

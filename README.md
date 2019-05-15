@@ -117,3 +117,66 @@ Collecitonの削除処理を実施します。
    "collection": "test"
 }
 ```
+
+## Aggrigate Collection
+集計処理を実施します。
+例えば以下のようなデータがあり、
+
+```
+user
+|-doc1{name: gaku}
+|-doc2{name: gakuko}
+
+purchese
+|-pdoc1{uid: doc1, price: 500}
+|-pdoc2{uid: doc2, price: 600}
+|-pdoc3{uid: doc1, price: 700}
+         ↓
+user
+|-doc1{name: gaku, priceall: 1200}
+|-doc2{name: gakuko, priceall: 600}
+```
+と集計したい場合、
+
+```
+{
+   "method": "AGG_COLLECTION",
+   "collection": "user",
+   "params": [
+           {"name": "priceall", "aggCollection": "purchese", "if": "{uid} === $ID", "aggField": "price"}
+   ]
+}
+```
+で、aggFieldで指定したFieldの集計値をnameで指定したFieldに格納します。  
+ifプロパティで条件を指定することができ、{aggCollectionのフィールド}で値を取得することができます。  
+また、$IDと記述することで、collectionで指定したコレクションのdocumentIDを取得します。  
+
+## Countup Collection
+対象のdocument数を集計し格納します。
+
+```
+user
+|-doc1{name: gaku}
+|-doc2{name: gakuko}
+
+purchese
+|-pdoc1{uid: doc1, price: 500}
+|-pdoc2{uid: doc2, price: 600}
+|-pdoc3{uid: doc1, price: 700}
+         ↓
+user
+|-doc1{name: gaku, purcheseCount: 2}
+|-doc2{name: gakuko, purchessCount: 1}
+```
+としたい場合、
+
+```
+{
+   "method": "COUNTUP_COLLECTION",
+   "collection": "user",
+   "params": [
+           {"name": "purcheseCount", "aggCollection": "purchese", "if": "{uid} === $ID"}
+   ]
+}
+```
+とすることで、document数を計測し格納処理を実施します。

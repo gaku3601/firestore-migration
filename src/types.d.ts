@@ -12,4 +12,6 @@ interface Param {
   if: string;
   value: any;
   to: string;
+  aggCollection: string;
+  aggField: string;
 }

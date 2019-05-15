@@ -29,6 +29,12 @@ export default class {
         if (this.content.method === 'DELETE_COLLECTION') {
             await f.deleteCollection(this.content.collection);
         }
+        if (this.content.method === 'AGG_COLLECTION') {
+            await f.aggregateCollection(this.content.collection, this.content.params);
+        }
+        if (this.content.method === 'COUNTUP_COLLECTION') {
+            await f.countupCollection(this.content.collection, this.content.params);
+        }
     }
     get Date(): string {
         return this.version;
