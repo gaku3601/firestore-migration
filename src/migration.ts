@@ -35,6 +35,12 @@ export default class {
         if (this.content.method === 'COUNTUP_COLLECTION') {
             await f.countupCollection(this.content.collection, this.content.params);
         }
+        if (this.content.method === 'AGG_DOCUMENT') {
+            await f.aggregateCollectionToDocument(this.content.document, this.content.params);
+        }
+        if (this.content.method === 'COUNTUP_DOCUMENT') {
+            await f.countupCollectionToDocument(this.content.document, this.content.params);
+        }
     }
     get Date(): string {
         return this.version;

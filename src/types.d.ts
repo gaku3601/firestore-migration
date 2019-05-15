@@ -4,7 +4,7 @@ declare module '*.tmp' {
 }
 
 interface JsonRes {
-    method: string, collection: string, params: Param[];
+    method: string, collection: string, document: string, params: Param[];
 }
 
 interface Param {

@@ -47,30 +47,27 @@ export default class {
     for (const v of params) {
       const aggData = await admin.firestore().collectionGroup(v.aggCollection).get();
       for (const d of data.docs) {
-        const value: number = aggData.docs.filter((x: FirebaseFirestore.QueryDocumentSnapshot) => {
-          // if部分の加工(文字列でコードの実装)
-          const ifstr = v.if.replace(/\{(.*?)\}/g, (_, key) => {
-            return `x.data().${key}`;
-          }).replace(/\$ID/g, `d.id`);
-          // tslint:disable-next-line
-          return eval(ifstr);
-        }).map((x: FirebaseFirestore.QueryDocumentSnapshot) => {
-          // フィールドが存在しない場合,0を返却
-          if (!x.data()[v.aggField]) {
-            return 0;
-          }
-          return x.data()[v.aggField];
-        }).reduce((pre: number, cur: number) => {
-          return pre + cur;
-        }, 0);
-
         // 書き込みデータの作成
         const list: {[key: string]: any} = {};
-        list[v.name] = value;
+        list[v.name] = this.aggregateValue(aggData, v, d);
 
         // 書き込み
         await admin.firestore().doc(d.ref.path).update(list);
       }
+    }
+  }
+
+  // documentを集計し値を格納する処理(単一documentに格納)
+  public async aggregateCollectionToDocument(document: string, params: Param[]) {
+    for (const v of params) {
+      const aggData = await admin.firestore().collectionGroup(v.aggCollection).get();
+
+      // 書き込みデータの作成
+      const list: {[key: string]: any} = {};
+      list[v.name] = this.aggregateValue(aggData, v, null);
+
+      // 書き込み
+      await admin.firestore().doc(document).update(list);
     }
   }
 
@@ -80,22 +77,26 @@ export default class {
     for (const v of params) {
       const aggData = await admin.firestore().collectionGroup(v.aggCollection).get();
       for (const d of data.docs) {
-        const count = aggData.docs.filter((x: FirebaseFirestore.QueryDocumentSnapshot) => {
-          // if部分の加工(文字列でコードの実装)
-          const ifstr = v.if.replace(/\{(.*?)\}/g, (_, key) => {
-            return `x.data().${key}`;
-          }).replace(/\$ID/g, `d.id`);
-          // tslint:disable-next-line
-          return eval(ifstr)
-        }).length;
-
         // 書き込みデータの作成
         const list: {[key: string]: any} = {};
-        list[v.name] = count;
+        list[v.name] = this.countupValue(aggData, v, d);
 
         // 書き込み
         await admin.firestore().doc(d.ref.path).update(list);
       }
+    }
+  }
+
+  // documentをカウントアップし値を格納する処理(単一documentに格納)
+  public async countupCollectionToDocument(document: string, params: Param[]) {
+    for (const v of params) {
+      const aggData = await admin.firestore().collectionGroup(v.aggCollection).get();
+        // 書き込みデータの作成
+      const list: {[key: string]: any} = {};
+      list[v.name] = this.countupValue(aggData, v, null);
+
+      // 書き込み
+      await admin.firestore().doc(document).update(list);
     }
   }
 
@@ -218,5 +219,46 @@ export default class {
           this.deleteQueryBatch(query, batchSize);
         });
       });
+  }
+
+  // 集計処理を実施する
+  private aggregateValue(
+    aggCollection: FirebaseFirestore.QuerySnapshot,
+    param: Param,
+    doc: FirebaseFirestore.QueryDocumentSnapshot | null): number {
+    return aggCollection.docs.filter((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+      if (param.if) {
+        // if部分の加工(文字列でコードの実装)
+        const ifstr = param.if.replace(/\{(.*?)\}/g, (_, key) => {
+          return `x.data().${key}`;
+        }).replace(/\$ID/g, `doc.id`);
+        // tslint:disable-next-line
+        return eval(ifstr);
+      } else {
+        return true;
+      }
+    }).map((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+      // フィールドが存在しない場合,0を返却
+      if (!x.data()[param.aggField]) {
+        return 0;
+      }
+      return x.data()[param.aggField];
+    }).reduce((pre: number, cur: number) => {
+      return pre + cur;
+    }, 0);
+  }
+
+  // document数を集計し返却する
+  private countupValue(
+    aggCollection: FirebaseFirestore.QuerySnapshot,
+    param: Param, doc: FirebaseFirestore.QueryDocumentSnapshot | null): number {
+    return aggCollection.docs.filter((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+      // if部分の加工(文字列でコードの実装)
+      const ifstr = param.if.replace(/\{(.*?)\}/g, (_, key) => {
+        return `x.data().${key}`;
+      }).replace(/\$ID/g, `doc.id`);
+      // tslint:disable-next-line
+      return eval(ifstr)
+    }).length;
   }
 }

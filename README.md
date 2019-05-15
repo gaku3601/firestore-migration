@@ -1,5 +1,6 @@
 # 注意事項
-現状、実装段階です。決して本番環境等では利用しないでください。
+現状、実装段階です。  
+ご利用する際はツールの挙動等を理解した上でご利用いただけますと幸いです。
 
 # firestore-migration
 これはfirestoreのdatabaseをmigrationするためのcomman lineツールです。  
@@ -151,8 +152,21 @@ user
 ifプロパティで条件を指定することができ、{aggCollectionのフィールド}で値を取得することができます。  
 また、$IDと記述することで、collectionで指定したコレクションのdocumentIDを取得します。  
 
+## Aggrigate Store Document
+単一documentに集計結果を格納する場合、以下のように記述します。
+
+```
+{
+   "method": "AGG_DOCUMENT",
+   "document": "info/priceAgg",
+   "params": [
+           {"name": "priceall", "aggCollection": "purchese", "aggField": "price", "if":"{price} < 700"}
+   ]
+}
+```
+
 ## Countup Store Collection
-対象のdocument数を集計し格納します。
+対象コレクションのdocument数を集計し格納します。
 
 ```
 user
@@ -180,3 +194,16 @@ user
 }
 ```
 とすることで、document数を計測し格納処理を実施します。
+
+## Countup Store Document
+単一documentに対象コレクションのdocument数を集計し格納する場合、以下のように記述します。
+
+```
+{
+   "method": "COUNTUP_DOCUMENT",
+   "document": "info/priceAgg",
+   "params": [
+           {"name": "purcheseAllCount", "aggCollection": "purchese", "if":"{price} < 700"}
+   ]
+}
+```
