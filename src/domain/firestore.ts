@@ -1,8 +1,11 @@
-import IRepository from './iRepository';
+import IRepository from '@/domain/iRepository';
 export default class {
   private db!: IRepository;
   constructor(fireStoreHandler: IRepository) {
     this.db = fireStoreHandler;
+  }
+  public test() {
+    return 'aaaa';
   }
 
   // fieldの追加処理

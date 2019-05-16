@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "webpack --config webpack.config.js",
-    "watch": "webpack --config webpack.dev.js --watch"
+    "watch": "webpack --config webpack.dev.js --watch",
+    "test": "TS_NODE_FILES=true mocha -r ts-node/register -r tsconfig-paths/register test/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -26,10 +27,16 @@
   ],
   "homepage": "https://github.com/gaku3601/firestore-migration#readme",
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
     "@types/node": "^12.0.0",
+    "chai": "^4.2.0",
     "commander": "^2.20.0",
+    "mocha": "^6.1.4",
     "raw-loader": "^2.0.0",
     "ts-loader": "^6.0.0",
+    "ts-node": "^8.1.0",
+    "tsconfig-paths": "^3.8.0",
     "tslint": "^5.12.0",
     "tslint-loader": "^3.5.4",
     "typescript": "^3.4.5",

@@ -7,10 +7,13 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2015"
+    "target": "es2015",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "compileOnSave": true,
   "include": [
-    "src"
+    "src", "test"
   ]
 }
