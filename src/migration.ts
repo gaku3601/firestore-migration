@@ -1,4 +1,5 @@
-import firestore from './firestore';
+import repo from './db/firestore';
+import firestore from './domain/firestore';
 export default class {
     private version!: string;
     private path!: string;
@@ -9,7 +10,8 @@ export default class {
         this.content = content;
     }
     public async execute() {
-        const f = new firestore();
+        const db = new repo();
+        const f = new firestore(db);
         const flg = await f.checkMigrateVersion(this.version);
         if (flg) {
             return;
