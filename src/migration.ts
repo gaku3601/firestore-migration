@@ -1,13 +1,14 @@
 import repo from './db/firestore';
 import firestore from './domain/firestore';
+import MigrationFile from '@/domain/MigrationFile';
 export default class {
     private version!: string;
     private path!: string;
-    private content!: JsonRes;
-    constructor(version: string, path: string, content: JsonRes) {
+    private content!: MigrationFile;
+    constructor(version: string, path: string, content: any) {
         this.version = version;
         this.path = path;
-        this.content = content;
+        this.content = content as MigrationFile;
     }
     public async execute() {
         const db = new repo();
@@ -50,7 +51,7 @@ export default class {
     get Path(): string {
         return this.path;
     }
-    get Content(): JsonRes {
+    get Content(): MigrationFile {
         return this.content;
     }
 }

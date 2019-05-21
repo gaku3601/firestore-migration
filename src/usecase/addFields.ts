@@ -1,3 +1,4 @@
+import Param from '@/domain/Param';
 export default class {
     private collection: string;
     private params: Param[];

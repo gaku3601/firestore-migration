@@ -1,5 +1,6 @@
 import IRepository from '@/domain/iRepository';
 import { Document } from '@/domain/document';
+import Param from '@/domain/Param';
 export default class {
     private db!: IRepository;
     constructor(fireStoreHandler: IRepository) {

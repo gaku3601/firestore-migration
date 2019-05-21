@@ -2,16 +2,3 @@ declare module '*.tmp' {
   const contents: {default: string}
   export = contents
 }
-
-interface JsonRes {
-    method: string, collection: string, document: string, params: Param[];
-}
-
-interface Param {
-  name: string;
-  if: string;
-  value: any;
-  to: string;
-  aggCollection: string;
-  aggField: string;
-}
