@@ -10,7 +10,7 @@
     "lint": "tslint --project tsconfig.json",
     "build": "webpack --config webpack.config.js",
     "watch": "webpack --config webpack.dev.js --watch",
-    "test": "TS_NODE_FILES=true mocha -r ts-node/register -r tsconfig-paths/register test/**/*.ts"
+    "test": "tslint --project tsconfig.json && TS_NODE_FILES=true mocha -r ts-node/register -r tsconfig-paths/register test/**/*.ts"
   },
   "repository": {
     "type": "git",
