@@ -1,4 +1,5 @@
 import "firebase-admin";
+import { Document } from '@/domain/document'
 
 export default interface IRepository{
     DeleteField(): FirebaseFirestore.FieldValue
@@ -8,4 +9,6 @@ export default interface IRepository{
     Update(documentPath: string, list: {[key: string]: any}): Promise<FirebaseFirestore.WriteResult>
     Set(documentPath: string, list: {[key: string]: any}): Promise<FirebaseFirestore.WriteResult>
     Batch(): FirebaseFirestore.WriteBatch
+    CollectionGroup2(collection: string): Promise<Document[]>
+    Update2(documentPath: string, list: {[key: string]: any}): void
 }

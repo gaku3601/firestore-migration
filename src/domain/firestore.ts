@@ -1,4 +1,5 @@
 import IRepository from '@/domain/iRepository';
+import { Document } from '@/domain/document';
 export default class {
   private db!: IRepository;
   constructor(fireStoreHandler: IRepository) {
@@ -9,10 +10,11 @@ export default class {
   }
 
   // fieldの追加処理
-  public async add(collection: string, params: Param[]) {
-    const data = await this.db.CollectionGroup(collection);
-    data.docs.map(async (x: FirebaseFirestore.QueryDocumentSnapshot) => {
-      await this.db.Update(x.ref.path, this.convertAddDataToFirestore(params));
+  public add(collection: string, params: Param[]) {
+    this.db.CollectionGroup2(collection).then((docs: Document[]) => {
+      docs.forEach((x: Document) => {
+        this.db.Update2(x.Path, this.convertAddDataToFirestore(params));
+      });
     });
   }
 

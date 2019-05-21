@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
-import IRepository from '../domain/iRepository';
+import IRepository from '@/domain/iRepository';
+import { Document } from '@/domain/document';
 export default class Firestore implements IRepository {
     constructor() {
         this.settingKey();
@@ -17,6 +18,9 @@ export default class Firestore implements IRepository {
     public Update(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
         return admin.firestore().doc(documentPath).update(list);
     }
+    public Update2(documentPath: string, list: { [key: string]: any; }) {
+        admin.firestore().doc(documentPath).update(list);
+    }
     public Set(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
         return admin.firestore().doc(documentPath).set(list);
     }
@@ -25,6 +29,16 @@ export default class Firestore implements IRepository {
     }
     public async CollectionGroup(collection: string) {
         return admin.firestore().collectionGroup(collection).get();
+    }
+    public async CollectionGroup2(collection: string): Promise<Document[]> {
+        const documents: Document[] = [];
+        const data = await admin.firestore().collectionGroup(collection).get();
+        data.forEach((x: FirebaseFirestore.QueryDocumentSnapshot) => {
+            const doc = new Document();
+            doc.Path = x.ref.path;
+            documents.push(doc);
+        });
+        return documents;
     }
 
     private settingKey() {
