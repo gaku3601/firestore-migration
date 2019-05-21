@@ -1,5 +1,5 @@
 import * as commanders from 'commander';
-import fileOperation from './fileOperation';
+import fileOperation from './FileOperation';
 commanders
   .version('0.0.1', '-v, --version')
   .option('-t, --test', 'test option')
