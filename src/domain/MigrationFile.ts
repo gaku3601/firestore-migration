@@ -4,5 +4,5 @@ export default class MigrationFile {
     public method!: string;
     public collection!: string;
     public document!: string;
-    public params!: Array<Param>;
+    public params!: Param[];
 }
