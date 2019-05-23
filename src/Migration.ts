@@ -1,6 +1,8 @@
 import repo from './db/Firestore';
 import firestore from './domain/Firestore';
 import MigrationFile from '@/domain/MigrationFile';
+import AddFields from '@/usecase/AddFields';
+
 export default class {
     private version!: string;
     private path!: string;
@@ -20,7 +22,8 @@ export default class {
         }
         */
         if (this.content.method === 'ADD') {
-            await f.add(this.content.collection, this.content.params);
+            const addFields = new AddFields(db, this.content.collection, this.content.params);
+            addFields.Execute();
         }
         if (this.content.method === 'DEL') {
             await f.del(this.content.collection, this.content.params);
