@@ -2,6 +2,7 @@ import repo from './db/Firestore';
 import firestore from './domain/Firestore';
 import MigrationFile from '@/domain/MigrationFile';
 import AddFields from '@/usecase/AddFields';
+import DeleteFields from '@/usecase/DeleteFields';
 
 export default class {
     private version!: string;
@@ -26,7 +27,8 @@ export default class {
             addFields.Execute();
         }
         if (this.content.method === 'DEL') {
-            await f.del(this.content.collection, this.content.params);
+            const deleteFields = new DeleteFields(db, this.content.collection, this.content.params);
+            deleteFields.Execute();
         }
         if (this.content.method === 'MOD') {
             await f.mod(this.content.collection, this.content.params);

@@ -2,18 +2,14 @@ import addFields from '@/usecase/AddFields';
 import { assert } from 'chai';
 import IRepository from '@/usecase/IRepository';
 import { Document } from '@/domain/Document';
+import Param from '@/domain/Param';
 
 class Test implements IRepository {
-    public list: {[key: string]: any} = {};
-    public async CollectionGroup2(collection: string): Promise<Document[]> {
-        const documents: Document[] = [];
-        const d = new Document();
-        d.Path = 'collection path';
-        documents.push(d);
-        return documents;
+    public CollectionGroup2(collection: string): Promise<Document[]> {
+        throw new Error('Method not implemented.');
     }
-    public Update2(documentPath: string, list: {[key: string]: any}) {
-        this.list = list;
+    public Update2(documentPath: string, Params: Param[], operation: string): void {
+        throw new Error('Method not implemented.');
     }
 }
 
@@ -30,11 +26,5 @@ describe('addFields class', () => {
             // tslint:disable-next-line
             new addFields(repo, 'test', [{name: 'aaa', if: '', value: '', to: '', aggCollection: '', aggField: ''}]);
         }, 'params[value]に値が設定されていません。');
-    });
-    it('更新処理が行われること', async () => {
-        const a = new addFields(repo, 'test',
-        [{name: 'name', if: '', value: 'value2', to: '', aggCollection: '', aggField: ''}]);
-        await a.Execute();
-        assert.deepEqual(repo.list.name, 'value2');
     });
 });

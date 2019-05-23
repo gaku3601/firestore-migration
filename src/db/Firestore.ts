@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import IRepository from '@/domain/IRepository';
 import { Document } from '@/domain/Document';
+import Param from '@/domain/Param';
 export default class Firestore implements IRepository {
     constructor() {
         this.settingKey();
@@ -18,7 +19,8 @@ export default class Firestore implements IRepository {
     public Update(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
         return admin.firestore().doc(documentPath).update(list);
     }
-    public Update2(documentPath: string, list: { [key: string]: any; }) {
+    public Update2(documentPath: string, params: Param[], operation: string) {
+        const list = this.convertJsonParams(params, operation);
         admin.firestore().doc(documentPath).update(list);
     }
     public Set(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
@@ -53,5 +55,20 @@ export default class Firestore implements IRepository {
                 credential: admin.credential.cert(JSON.parse(buffer.toString())),
             });
         }
+    }
+
+    private convertJsonParams(params: Param[], operation: string) {
+        const list: {[key: string]: any} = {};
+        if (operation === 'ADD') {
+            for (const param of params) {
+                list[param.name] = param.value;
+            }
+        }
+        if (operation === 'DEL') {
+            for (const param of params) {
+                list[param.name] = admin.firestore.FieldValue.delete();
+            }
+        }
+        return list;
     }
 }

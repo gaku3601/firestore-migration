@@ -6,14 +6,6 @@ export default class {
       this.db = fireStoreHandler;
     }
 
-    // fieldの削除処理
-    public async del(collection: string, params: Param[]) {
-      const data = await this.db.CollectionGroup(collection);
-      data.docs.map(async (x: FirebaseFirestore.QueryDocumentSnapshot) => {
-        await this.db.Update(x.ref.path, this.convertDelDataToFirestore(params));
-      });
-    }
-
     // fieldの修正処理
     public async mod(collection: string, params: Param[]) {
       const data = await this.db.CollectionGroup(collection);
@@ -115,15 +107,6 @@ export default class {
         await this.db.Set(`migrations/${version}`, {});
       }
       return flg;
-    }
-
-    // firestoreに格納できる形でdelldataを加工する
-    private convertDelDataToFirestore(params: Param[]): {[key: string]: FirebaseFirestore.FieldValue} {
-      const list: {[key: string]: FirebaseFirestore.FieldValue} = {};
-      params.forEach((x: Param) => {
-        list[x.name] = this.db.DeleteField();
-      });
-      return list;
     }
 
     // firestoreに格納できる形でdelldataを加工する
