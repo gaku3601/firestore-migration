@@ -1,19 +1,9 @@
 import IRepository from '@/domain/IRepository';
-import { Document } from '@/domain/Document';
 import Param from '@/domain/Param';
 export default class {
     private db!: IRepository;
     constructor(fireStoreHandler: IRepository) {
       this.db = fireStoreHandler;
-    }
-
-    // fieldの追加処理
-    public add(collection: string, params: Param[]) {
-      this.db.CollectionGroup2(collection).then((docs: Document[]) => {
-        docs.forEach((x: Document) => {
-          this.db.Update2(x.Path, this.convertAddDataToFirestore(params));
-        });
-      });
     }
 
     // fieldの削除処理
@@ -125,15 +115,6 @@ export default class {
         await this.db.Set(`migrations/${version}`, {});
       }
       return flg;
-    }
-
-    // firestoreに格納できる形でadddataを加工する
-    private convertAddDataToFirestore(params: Param[]): {[key: string]: string} {
-      const list: {[key: string]: string} = {};
-      params.forEach((x: Param) => {
-        list[x.name] = x.value;
-      });
-      return list;
     }
 
     // firestoreに格納できる形でdelldataを加工する
