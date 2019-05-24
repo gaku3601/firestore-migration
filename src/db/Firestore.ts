@@ -19,7 +19,7 @@ export default class Firestore implements IRepository {
         return admin.firestore().doc(documentPath).update(list);
     }
     public Update2(doc: Document) {
-        const list = this.convertJsonParams(doc.Datas);
+        const list = this.convertDocument(doc.Datas);
         admin.firestore().doc(doc.Path).update(list);
     }
     public Set(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
@@ -55,7 +55,7 @@ export default class Firestore implements IRepository {
         }
     }
 
-    private convertJsonParams(datas: {[field: string]: any}) {
+    private convertDocument(datas: {[field: string]: any}) {
         for (const key in datas) {
             if (datas[key] === Operation.Delete) {
                 datas[key] = admin.firestore.FieldValue.delete();

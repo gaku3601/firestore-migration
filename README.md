@@ -85,13 +85,11 @@ migration -cで生成したファイルからmigrationを実施します。
    "method": "MOD",
    "collection": "tests",
    "params": [
-      {"name": "propA", "if":"{propA} === 2 && {propC} === 'val2'","value": 1}, // *1
-      {"name": "propC", "value": "val"} //*2
+      {"name": "propA", "if":"{propA} === 2 && {propC} === 'val2'","value": 1} // *1
    ]
 }
 [補足]
 *1 if内では'{field名}'で現在格納されているfield内容を取得し、条件式を記述できます。trueの場合、value値を適用します。
-*2 強制的にfieldの値をvalue値で上書きします。fieldが存在しない場合、valの値で新たにfieldを作成します。
 ```
 
 ## Change Field Name

@@ -3,6 +3,7 @@ import firestore from './domain/Firestore';
 import MigrationFile from '@/domain/MigrationFile';
 import AddFields from '@/usecase/AddFields';
 import DeleteFields from '@/usecase/DeleteFields';
+import ModFields from './usecase/ModFields';
 
 export default class {
     private version!: string;
@@ -31,7 +32,8 @@ export default class {
             deleteFields.Execute();
         }
         if (this.content.method === 'MOD') {
-            await f.mod(this.content.collection, this.content.params);
+            const modFields = new ModFields(db, this.content.collection, this.content.params);
+            modFields.Execute();
         }
         if (this.content.method === 'CHANGE_FIELD_NAME') {
             await f.changeFieldName(this.content.collection, this.content.params);
