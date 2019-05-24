@@ -1,7 +1,6 @@
 import * as admin from 'firebase-admin';
 import IRepository from '@/domain/IRepository';
-import { Document } from '@/domain/Document';
-import Param from '@/domain/Param';
+import { Document, Operation } from '@/domain/Document';
 export default class Firestore implements IRepository {
     constructor() {
         this.settingKey();
@@ -19,9 +18,9 @@ export default class Firestore implements IRepository {
     public Update(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
         return admin.firestore().doc(documentPath).update(list);
     }
-    public Update2(documentPath: string, params: Param[], operation: string) {
-        const list = this.convertJsonParams(params, operation);
-        admin.firestore().doc(documentPath).update(list);
+    public Update2(doc: Document) {
+        const list = this.convertJsonParams(doc.Datas);
+        admin.firestore().doc(doc.Path).update(list);
     }
     public Set(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
         return admin.firestore().doc(documentPath).set(list);
@@ -36,8 +35,7 @@ export default class Firestore implements IRepository {
         const documents: Document[] = [];
         const data = await admin.firestore().collectionGroup(collection).get();
         data.forEach((x: FirebaseFirestore.QueryDocumentSnapshot) => {
-            const doc = new Document();
-            doc.Path = x.ref.path;
+            const doc = new Document(x.ref.path, x.data());
             documents.push(doc);
         });
         return documents;
@@ -57,18 +55,12 @@ export default class Firestore implements IRepository {
         }
     }
 
-    private convertJsonParams(params: Param[], operation: string) {
-        const list: {[key: string]: any} = {};
-        if (operation === 'ADD') {
-            for (const param of params) {
-                list[param.name] = param.value;
+    private convertJsonParams(datas: {[field: string]: any}) {
+        for (const key in datas) {
+            if (datas[key] === Operation.Delete) {
+                datas[key] = admin.firestore.FieldValue.delete();
             }
         }
-        if (operation === 'DEL') {
-            for (const param of params) {
-                list[param.name] = admin.firestore.FieldValue.delete();
-            }
-        }
-        return list;
+        return datas;
     }
 }

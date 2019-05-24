@@ -1,6 +1,6 @@
 import Param from '@/domain/Param';
 import IRepository from './IRepository';
-import { Document } from '@/domain/Document';
+import { Document, Operation } from '@/domain/Document';
 export default class {
     private db: IRepository;
     private collection: string;
@@ -14,9 +14,17 @@ export default class {
     public Execute() {
         this.db.CollectionGroup2(this.collection).then((docs: Document[]) => {
             for (const doc of docs) {
-                this.db.Update2(doc.Path, this.params, 'DEL');
+                const storeDoc = this.createStoreDocument(doc.Path);
+                this.db.Update2(storeDoc);
             }
         });
+    }
+    private createStoreDocument(documentPath: string) {
+        const datas: {[field: string]: any} = {};
+        for (const param of this.params) {
+            datas[param.name] = Operation.Delete;
+        }
+        return new Document(documentPath, datas);
     }
     private validation() {
         for (const param of this.params) {

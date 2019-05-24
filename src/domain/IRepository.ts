@@ -1,6 +1,5 @@
 import 'firebase-admin';
 import { Document } from '@/domain/Document';
-import Param from '@/domain/Param';
 
 export default interface IRepository {
     DeleteField(): FirebaseFirestore.FieldValue;
@@ -11,5 +10,5 @@ export default interface IRepository {
     Set(documentPath: string, list: {[key: string]: any}): Promise<FirebaseFirestore.WriteResult>;
     Batch(): FirebaseFirestore.WriteBatch;
     CollectionGroup2(collection: string): Promise<Document[]>;
-    Update2(documentPath: string, params: Param[], operation: string): void;
+    Update2(doc: Document): void;
 }
