@@ -6,17 +6,6 @@ export default class {
       this.db = fireStoreHandler;
     }
 
-    // field名の変更処理
-    public async changeFieldName(collection: string, params: Param[]) {
-      const data = await this.db.CollectionGroup(collection);
-      data.docs.map(async (x: FirebaseFirestore.QueryDocumentSnapshot): Promise<void> => {
-        const list = this.convertChangeFieldNameDataToFirestore(x.data(), params);
-        if (Object.keys(list).length !== 0) {
-          await this.db.Update(x.ref.path, list);
-        }
-      });
-    }
-
     // documentを集計し値を格納する処理
     public async aggregateCollection(collection: string, params: Param[]) {
       const data = await this.db.CollectionGroup(collection);
@@ -97,19 +86,6 @@ export default class {
         await this.db.Set(`migrations/${version}`, {});
       }
       return flg;
-    }
-
-    // firestoreに格納できる形でdelldataを加工する
-    private convertChangeFieldNameDataToFirestore(data: FirebaseFirestore.DocumentData, params: Param[])
-    : {[key: string]: any} {
-      const list: {[key: string]: any} = {};
-      params.forEach((x: Param) => {
-        if (Boolean(data[x.name])) {
-          list[x.name] = this.db.DeleteField();
-          list[x.to] = data[x.name];
-        }
-      });
-      return list;
     }
 
     // コレクション削除処理

@@ -4,6 +4,7 @@ import MigrationFile from '@/domain/MigrationFile';
 import AddFields from '@/usecase/AddFields';
 import DeleteFields from '@/usecase/DeleteFields';
 import ModFields from './usecase/ModFields';
+import ChangeFieldsName from '@/usecase/ChangeFieldsName';
 
 export default class {
     private version!: string;
@@ -36,7 +37,8 @@ export default class {
             modFields.Execute();
         }
         if (this.content.method === 'CHANGE_FIELD_NAME') {
-            await f.changeFieldName(this.content.collection, this.content.params);
+            const changeFieldsName = new ChangeFieldsName(db, this.content.collection, this.content.params);
+            changeFieldsName.Execute();
         }
         if (this.content.method === 'DELETE_COLLECTION') {
             await f.deleteCollection(this.content.collection);
