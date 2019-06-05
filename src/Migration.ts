@@ -1,10 +1,10 @@
-import repo from './db/Firestore';
-import firestore from './domain/Firestore';
+import repo from '@/db/Firestore';
+import firestore from '@/domain/Firestore';
 import MigrationFile from '@/domain/MigrationFile';
-import AddFields from '@/usecase/AddFields';
-import DeleteFields from '@/usecase/DeleteFields';
-import ModFields from './usecase/ModFields';
-import ChangeFieldsName from '@/usecase/ChangeFieldsName';
+import AddFields from '@/usecase/migrate/AddFields';
+import DeleteFields from '@/usecase/migrate/DeleteFields';
+import ModFields from '@/usecase/migrate/ModFields';
+import ChangeFieldsName from '@/usecase/migrate/ChangeFieldsName';
 
 export default class {
     private version!: string;

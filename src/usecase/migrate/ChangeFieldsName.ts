@@ -1,5 +1,5 @@
 import Param from '@/domain/Param';
-import IRepository from '@/usecase/IRepository';
+import IRepository from '@/usecase/migrate/IRepository';
 import { Document, Operation } from '@/domain/Document';
 export default class {
     private db: IRepository;

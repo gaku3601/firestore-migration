@@ -1,9 +1,9 @@
-import addFields from '@/usecase/AddFields';
+import addFields from '@/usecase/migrate/AddFields';
 import { assert } from 'chai';
-import IRepository from '@/usecase/IRepository';
+import IRepository from '@/usecase/migrate/IRepository';
 import { Document } from '@/domain/Document';
 import Param from '@/domain/Param';
-import AddFields from '@/usecase/AddFields';
+import AddFields from '@/usecase/migrate/AddFields';
 
 class Test implements IRepository {
     public Doc!: Document;

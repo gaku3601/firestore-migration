@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import ChangeFieldsName from '@/usecase/ChangeFieldsName';
+import ChangeFieldsName from '@/usecase/migrate/ChangeFieldsName';
 import Param from '@/domain/Param';
-import IRepository from '@/usecase/IRepository';
+import IRepository from '@/usecase/migrate/IRepository';
 import { Document, Operation } from '@/domain/Document';
 
 class TestDB implements IRepository {

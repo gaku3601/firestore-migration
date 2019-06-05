@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import DeleteFields from '@/usecase/DeleteFields';
+import DeleteFields from '@/usecase/migrate/DeleteFields';
 import Param from '@/domain/Param';
 import { Document, Operation } from '@/domain/Document';
-import IRepository from '@/usecase/IRepository';
+import IRepository from '@/usecase/migrate/IRepository';
 
 class Test implements IRepository {
     public doc!: Document;
