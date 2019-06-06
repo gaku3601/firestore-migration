@@ -16,6 +16,9 @@ class TestDB implements IRepository {
     public Update2(doc: Document): void {
         this.Docs.push(doc);
     }
+    public Set2(doc: Document): void {
+        throw new Error('Method not implemented.');
+    }
 }
 
 describe('ModFields class', () => {

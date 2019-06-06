@@ -16,6 +16,9 @@ class Test implements IRepository {
     public Update2(doc: Document): void {
         this.doc = doc;
     }
+    public Set2(doc: Document): void {
+        throw new Error('Method not implemented.');
+    }
 }
 
 describe('DeleteFields class', () => {

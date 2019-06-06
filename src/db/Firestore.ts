@@ -22,6 +22,10 @@ export default class Firestore implements IRepository {
         const list = this.convertDocument(doc.Datas);
         admin.firestore().doc(doc.Path).update(list);
     }
+    public Set2(doc: Document) {
+        const list = this.convertDocument(doc.Datas);
+        admin.firestore().doc(doc.Path).set(list);
+    }
     public Set(documentPath: string, list: { [key: string]: any; }): Promise<FirebaseFirestore.WriteResult> {
         return admin.firestore().doc(documentPath).set(list);
     }
