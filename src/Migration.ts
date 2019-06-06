@@ -1,5 +1,4 @@
 import repo from '@/db/Firestore';
-import firestore from '@/domain/Firestore';
 import MigrationFile from '@/domain/MigrationFile';
 import AddFields from '@/usecase/migrate/AddFields';
 import DeleteFields from '@/usecase/migrate/DeleteFields';
@@ -9,16 +8,13 @@ import ManagedVersion from '@/usecase/migrate/ManagedVersion';
 
 export default class {
     private version!: string;
-    private path!: string;
     private content!: MigrationFile;
-    constructor(version: string, path: string, content: any) {
+    constructor(version: string, content: any) {
         this.version = version;
-        this.path = path;
         this.content = content as MigrationFile;
     }
     public async execute() {
         const db = new repo();
-        const f = new firestore(db);
         const managedVersion = new ManagedVersion(db, this.version);
         const flg = await managedVersion.CheckVersion();
         if (flg) {
@@ -44,29 +40,8 @@ export default class {
             changeFieldsName.Execute();
             managedVersion.AddVersion();
         }
-        if (this.content.method === 'DELETE_COLLECTION') {
-            await f.deleteCollection(this.content.collection);
-        }
-        if (this.content.method === 'AGG_COLLECTION') {
-            await f.aggregateCollection(this.content.collection, this.content.params);
-        }
-        if (this.content.method === 'COUNTUP_COLLECTION') {
-            await f.countupCollection(this.content.collection, this.content.params);
-        }
-        if (this.content.method === 'AGG_DOCUMENT') {
-            await f.aggregateCollectionToDocument(this.content.document, this.content.params);
-        }
-        if (this.content.method === 'COUNTUP_DOCUMENT') {
-            await f.countupCollectionToDocument(this.content.document, this.content.params);
-        }
     }
-    get Date(): string {
+    get Version(): string {
         return this.version;
-    }
-    get Path(): string {
-        return this.path;
-    }
-    get Content(): MigrationFile {
-        return this.content;
     }
 }

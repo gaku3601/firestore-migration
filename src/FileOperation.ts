@@ -38,17 +38,17 @@ export default class {
           }
           const filePath = path.join(this.dirPath, file);
           const jsonObject = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-          this.fileList.push(new migration(file.slice(0, 17), filePath, jsonObject));
+          this.fileList.push(new migration(file.slice(0, 17), jsonObject));
         });
         this.sort();
     }
     // ソートの実施
     private sort = () => {
         this.fileList.sort((a, b) => {
-            if (a.Date > b.Date) {
+            if (a.Version > b.Version) {
                 return 1;
             }
-            if (a.Date < b.Date) {
+            if (a.Version < b.Version) {
                 return -1;
             }
             return 0;

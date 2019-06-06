@@ -12,10 +12,10 @@ export default class {
         this.validation();
     }
     public Execute() {
-        this.db.CollectionGroup2(this.collection).then((docs: Document[]) => {
+        this.db.CollectionGroup(this.collection).then((docs: Document[]) => {
             for (const doc of docs) {
                 const storeDocument = this.createStoreDocument(doc.Path);
-                this.db.Update2(storeDocument);
+                this.db.Update(storeDocument);
             }
         });
     }

@@ -6,7 +6,7 @@ export default class {
     constructor(private db: IRepository, private version: string) {}
 
     public async CheckVersion(): Promise<boolean> {
-        const docs = await this.db.CollectionGroup2('migrations');
+        const docs = await this.db.CollectionGroup('migrations');
         for (const doc of docs) {
             if (doc.Path === `${this.collection}/${this.version}`) {
                 console.log(`${this.version}は適用済みのため処理を実施しません。`);
@@ -18,6 +18,6 @@ export default class {
 
     public AddVersion() {
         const doc = new Document(`${this.collection}/${this.version}`, {});
-        this.db.Set2(doc);
+        this.db.Set(doc);
     }
 }

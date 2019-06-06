@@ -5,17 +5,17 @@ import { Document } from '@/domain/Document';
 
 class Test implements IRepository {
     public Doc!: Document;
-    public async CollectionGroup2(collection: string): Promise<Document[]> {
+    public async CollectionGroup(collection: string): Promise<Document[]> {
         const docs: Document[] = [];
         docs.push(new Document('migrations/20190514162121556', {}));
         docs.push(new Document('migrations/20190514162121557', {}));
         docs.push(new Document('migrations/20190514162121558', {}));
         return docs;
     }
-    public Update2(doc: Document): void {
+    public Update(doc: Document): void {
         this.Doc = doc;
     }
-    public Set2(doc: Document): void {
+    public Set(doc: Document): void {
         this.Doc = doc;
     }
 }

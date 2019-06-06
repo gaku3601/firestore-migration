@@ -12,11 +12,11 @@ export default class {
         this.validation(params);
     }
     public Execute() {
-        this.db.CollectionGroup2(this.collection).then((docs: Document[]) => {
+        this.db.CollectionGroup(this.collection).then((docs: Document[]) => {
             docs.forEach((doc: Document) => {
                 const storeData = this.createStoreData(doc.Path, doc.Datas);
                 if (Object.keys(storeData.Datas).length !== 0) {
-                    this.db.Update2(storeData);
+                    this.db.Update(storeData);
                 }
             });
         });

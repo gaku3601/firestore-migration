@@ -6,17 +6,17 @@ import IRepository from '@/usecase/migrate/IRepository';
 
 class Test implements IRepository {
     public doc!: Document;
-    public async CollectionGroup2(collection: string): Promise<Document[]> {
+    public async CollectionGroup(collection: string): Promise<Document[]> {
         const docs: Document[] = [];
         docs.push(new Document('path1', {name: 'gaku', age: 27, sex: 0}));
         docs.push(new Document('path2', {name: 'gakuko', age: 20, sex: 1}));
         docs.push(new Document('path3', {name: 'gakuzo', age: 30, sex: 0}));
         return docs;
     }
-    public Update2(doc: Document): void {
+    public Update(doc: Document): void {
         this.doc = doc;
     }
-    public Set2(doc: Document): void {
+    public Set(doc: Document): void {
         throw new Error('Method not implemented.');
     }
 }
