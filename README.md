@@ -1,5 +1,7 @@
 # 🎉firestore-migration🎉
-<div style="text-align:center"><img src="./logo.png" /></div>
+<p align="center">
+  <img src="./logo.png">
+</p>
 
 # firestore-migrationとは
 これはfirestoreのdatabaseをmigrationするためのcomman lineツールです。  
