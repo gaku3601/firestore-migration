@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as moment from 'moment';
-import migration from './migration';
+import migration from './Migration';
 export default class {
     private fileList: migration[] = [];
     private dirPath: string = '';
@@ -38,17 +38,17 @@ export default class {
           }
           const filePath = path.join(this.dirPath, file);
           const jsonObject = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-          this.fileList.push(new migration(file.slice(0, 17), filePath, jsonObject));
+          this.fileList.push(new migration(file.slice(0, 17), jsonObject));
         });
         this.sort();
     }
     // ソートの実施
     private sort = () => {
         this.fileList.sort((a, b) => {
-            if (a.Date > b.Date) {
+            if (a.Version > b.Version) {
                 return 1;
             }
-            if (a.Date < b.Date) {
+            if (a.Version < b.Version) {
                 return -1;
             }
             return 0;
