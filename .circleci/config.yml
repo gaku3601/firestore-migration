@@ -32,6 +32,7 @@ workflows:
     version: 2
     productionflow:
         jobs:
+            - test
             - publish:
                 context: heroku
                 requires:
