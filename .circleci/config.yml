@@ -26,8 +26,8 @@ jobs:
     publish:
         executor: default
         steps:
-            - npm_install
-            - run: npm -v
+            - run: ls
+            - run: ls node_modules
 workflows:
     version: 2
     productionflow:
