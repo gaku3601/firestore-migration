@@ -1,13 +1,21 @@
 version: 2.0
 jobs:
     prod-deploy:
-        machine:
-            image: circleci/classic:edge
+        docker:
+            - image: circleci/node:7.10
+        working_directory: ~/repo
         steps:
             - checkout
-            - run:
-                name: "npm version"
-                command: npm -v
+            - restore_cache:
+                keys:
+                    - v1-dependencies-{{ checksum "package.json" }}
+                    - v1-dependencies-
+            - run: yarn install
+            - save_cache:
+                paths:
+                    - node_modules
+                key: v1-dependencies-{{ checksum "package.json" }}
+            - run: yarn test
 workflows:
     version: 2
     productionflow:
