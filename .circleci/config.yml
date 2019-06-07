@@ -26,13 +26,18 @@ jobs:
     publish:
         executor: default
         steps:
-            - run: ls
-            - run: ls node_modules
+            - npm_install
+            - run: yarn build
 workflows:
     version: 2
     productionflow:
         jobs:
-            - test
+            - test:
+                context: heroku
+                filters:
+                    branches:
+                        only:
+                            - master
             - publish:
                 context: heroku
                 requires:
