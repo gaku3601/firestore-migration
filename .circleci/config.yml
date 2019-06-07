@@ -1,0 +1,20 @@
+version: 2.0
+jobs:
+    prod-deploy:
+        machine:
+            image: circleci/classic:edge
+        steps:
+            - checkout
+            - run:
+                name: "npm version"
+                command: npm -v
+workflows:
+    version: 2
+    productionflow:
+        jobs:
+            - prod-deploy:
+                context: heroku
+                filters:
+                    branches:
+                        only:
+                            - master
