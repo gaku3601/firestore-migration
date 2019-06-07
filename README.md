@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/firestore-migration.svg)](https://badge.fury.io/js/firestore-migration)
+[![CircleCI](https://circleci.com/gh/gaku3601/firestore-migration.svg?style=svg)](https://circleci.com/gh/gaku3601/firestore-migration)
 # 🎉firestore-migration🎉
 <p align="center">
   <img src="./logo.png">
