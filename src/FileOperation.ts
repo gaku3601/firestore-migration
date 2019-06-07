@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as moment from 'moment';
-import migration from './Migration';
+import migration from '@/infrastructure/MigrationRouter';
 export default class {
     private fileList: migration[] = [];
     private dirPath: string = '';

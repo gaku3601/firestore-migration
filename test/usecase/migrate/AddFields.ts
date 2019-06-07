@@ -17,8 +17,8 @@ class Test implements IRepository {
     public Update(doc: Document): void {
         this.Doc = doc;
     }
+    // tslint:disable-next-line
     public Set(doc: Document): void {
-        throw new Error('Method not implemented.');
     }
 }
 
@@ -27,13 +27,13 @@ describe('addFields class', () => {
     it('paramsに必要なnameに値がされていない場合、errorが例外として投げられること', () => {
         assert.throw(() => {
             // tslint:disable-next-line
-            new addFields(repo, 'test', [{name: '', if: '', value: 'aaa', to: '', aggCollection: '', aggField: ''}]);
+            new addFields(repo, 'test', [{name: '', if: '', value: 'aaa', to: '', aggCollection: '', aggField: ''}], '');
         }, 'params[name]に値が設定されていません。');
     });
     it('paramsに必要なvalueに値が設定されていない場合、errorが例外として投げられること', () => {
         assert.throw(() => {
             // tslint:disable-next-line
-            new addFields(repo, 'test', [{name: 'aaa', if: '', value: '', to: '', aggCollection: '', aggField: ''}]);
+            new addFields(repo, 'test', [{name: 'aaa', if: '', value: '', to: '', aggCollection: '', aggField: ''}], '');
         }, 'params[value]に値が設定されていません。');
     });
     describe('更新処理', () => {
@@ -41,8 +41,8 @@ describe('addFields class', () => {
         param.name = 'location';
         param.value = 'nara';
         const db = new Test();
-        const add = new AddFields(db, '', [param]);
-        add.Execute();
+        const add = new AddFields(db, '', [param], '');
+        add.StartMigration();
         it('location: naraなdocumentが更新関数に渡されること', () => {
             assert.deepEqual(db.Doc.Datas, {location: 'nara'});
         });

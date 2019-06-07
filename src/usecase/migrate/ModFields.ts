@@ -1,17 +1,17 @@
 import Param from '@/domain/Param';
 import IRepository from '@/usecase/migrate/IRepository';
 import { Document } from '@/domain/Document';
-export default class {
-    private db: IRepository;
+import Migration from '@/usecase/migrate/Migration';
+export default class ModFields extends Migration {
     private collection: string;
     private params: Param[];
-    constructor(db: IRepository, collection: string, params: Param[]) {
-        this.db = db;
+    constructor(db: IRepository, collection: string, params: Param[], version: string) {
+        super(db, version);
         this.collection = collection;
         this.params = params;
         this.validation(params);
     }
-    public Execute() {
+    protected Execute() {
         this.db.CollectionGroup(this.collection).then((docs: Document[]) => {
             docs.forEach((doc: Document) => {
                 const storeData = this.createStoreData(doc.Path, doc.Datas);

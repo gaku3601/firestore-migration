@@ -16,8 +16,8 @@ class Test implements IRepository {
     public Update(doc: Document): void {
         this.doc = doc;
     }
+    // tslint:disable-next-line
     public Set(doc: Document): void {
-        throw new Error('Method not implemented.');
     }
 }
 
@@ -26,15 +26,15 @@ describe('DeleteFields class', () => {
         assert.throw(() => {
             const db = new Test();
             // tslint:disable-next-line
-            new DeleteFields(db, 'test', [new Param()]);
+            new DeleteFields(db, 'test', [new Param()], '');
         }, 'params[name]に値が設定されていません。');
     });
     describe('削除処理を実施する', () => {
         const param = new Param();
         param.name = 'sex';
         const db = new Test();
-        const del = new DeleteFields(db, 'test', [param]);
-        del.Execute();
+        const del = new DeleteFields(db, 'test', [param], '');
+        del.StartMigration();
         it('sexに削除フラグを立てた状態で更新関数にデータが渡されていること', () => {
             assert.deepEqual(db.doc.Datas, {sex: Operation.Delete});
         });

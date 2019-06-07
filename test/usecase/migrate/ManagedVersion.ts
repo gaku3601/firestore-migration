@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import Migration from '@/usecase/migrate/ManagedVersion';
+import ManagedVersion from '@/usecase/migrate/ManagedVersion';
 import IRepository from '@/usecase/migrate/IRepository';
 import { Document } from '@/domain/Document';
 
@@ -25,13 +25,13 @@ describe('Migration class', () => {
         it('存在している場合、trueを返却', async () => {
             const repo = new Test();
             const version = '20190514162121557' ;
-            const m = new Migration(repo, version);
+            const m = new ManagedVersion(repo, version);
             assert.isTrue(await m.CheckVersion());
         });
         it('存在していない場合、falseを返却', async () => {
             const repo = new Test();
             const version = '20190514162121559' ;
-            const m = new Migration(repo, version);
+            const m = new ManagedVersion(repo, version);
             assert.isNotTrue(await m.CheckVersion());
         });
     });
@@ -39,7 +39,7 @@ describe('Migration class', () => {
         it('set関数にpath:migrations/{version}なdocumentが渡されるか', () => {
             const repo = new Test();
             const version = '20190514162121559';
-            const m = new Migration(repo, version);
+            const m = new ManagedVersion(repo, version);
             m.AddVersion();
             assert.deepEqual(repo.Doc.Path, 'migrations/20190514162121559');
         });

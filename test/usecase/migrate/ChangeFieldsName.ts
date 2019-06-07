@@ -16,8 +16,8 @@ class TestDB implements IRepository {
     public Update(doc: Document): void {
         this.Docs.push(doc);
     }
+    // tslint:disable-next-line
     public Set(doc: Document): void {
-        throw new Error('Method not implemented.');
     }
 }
 
@@ -28,7 +28,7 @@ describe('ChangeFieldsNameClass', () => {
             const param = new Param();
             param.to = 'test';
             // tslint:disable-next-line
-            new ChangeFieldsName(db, '', [new Param()]);
+            new ChangeFieldsName(db, '', [new Param()], '');
         }, 'params[name]に値が設定されていません。');
     });
     it('validationでparamsにtoが格納されていない場合、エラーが例外として出力されること', () => {
@@ -37,7 +37,7 @@ describe('ChangeFieldsNameClass', () => {
             const param = new Param();
             param.name = 'test';
             // tslint:disable-next-line
-            new ChangeFieldsName(db, '', [param]);
+            new ChangeFieldsName(db, '', [param], '');
         }, 'params[to]に値が設定されていません。');
     });
     describe('更新処理', () => {
@@ -46,20 +46,20 @@ describe('ChangeFieldsNameClass', () => {
         param.to = 'name2';
         it('update関数にdocumentが渡されていること', async () => {
             const db = new TestDB();
-            const c = new ChangeFieldsName(db, '', [param]);
-            await c.Execute();
+            const c = new ChangeFieldsName(db, '', [param], '');
+            await c.StartMigration();
             assert.isNotEmpty(db.Docs);
         });
         it('name Fieldに削除フラグを立てる', async () => {
             const db = new TestDB();
-            const c = new ChangeFieldsName(db, '', [param]);
-            await c.Execute();
+            const c = new ChangeFieldsName(db, '', [param], '');
+            await c.StartMigration();
             assert.deepEqual(db.Docs[0].Datas.name, Operation.Delete);
         });
         it('param.toのField名でparam.nameの値が格納された状態でupdate関数が呼び出されていること', async () => {
             const db = new TestDB();
-            const c = new ChangeFieldsName(db, '', [param]);
-            await c.Execute();
+            const c = new ChangeFieldsName(db, '', [param], '');
+            await c.StartMigration();
             assert.deepEqual(db.Docs[0].Datas.name2, 'gaku');
         });
     });

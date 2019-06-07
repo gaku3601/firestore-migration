@@ -16,8 +16,8 @@ class TestDB implements IRepository {
     public Update(doc: Document): void {
         this.Docs.push(doc);
     }
+    // tslint:disable-next-line
     public Set(doc: Document): void {
-        throw new Error('Method not implemented.');
     }
 }
 
@@ -29,7 +29,7 @@ describe('ModFields class', () => {
             p.if = 'if';
             const db = new TestDB();
             // tslint:disable-next-line
-            new ModFields(db, 'collection', [p]);
+            new ModFields(db, 'collection', [p], '');
         }, 'params[name]に値が設定されていません。');
     });
     it ('インスタンス生成時、paramsにvalueが格納されていない場合、例外が出力されること', () => {
@@ -39,7 +39,7 @@ describe('ModFields class', () => {
             p.if = 'if';
             const db = new TestDB();
             // tslint:disable-next-line
-            new ModFields(db, 'collection', [p]);
+            new ModFields(db, 'collection', [p], '');
         }, 'params[value]に値が設定されていません。');
     });
     it ('インスタンス生成時、paramsにifが格納されていない場合、例外が出力されること', () => {
@@ -49,7 +49,7 @@ describe('ModFields class', () => {
             p.value = 'value';
             const db = new TestDB();
             // tslint:disable-next-line
-            new ModFields(db, 'collection', [p]);
+            new ModFields(db, 'collection', [p], '');
         }, 'params[if]に値が設定されていません。');
     });
     describe ('更新処理を実施する', () => {
@@ -59,8 +59,8 @@ describe('ModFields class', () => {
             p.value = '男';
             p.if = '{sex} === 0';
             const db = new TestDB();
-            const m = new ModFields(db, '', [p]);
-            await m.Execute();
+            const m = new ModFields(db, '', [p], '');
+            await m.StartMigration();
             it ('テストデータ[path1]でsex:0のデータがsex:男に変換されたデータが渡っていること', () => {
                 assert.deepEqual(db.Docs[0].Datas, {sex: '男'});
             });
