@@ -18,17 +18,24 @@ commands:
                     - node_modules
                 key: v1-dependencies-{{ checksum "package.json" }}
 jobs:
-    prod-deploy:
+    test:
         executor: default
         steps:
             - npm_install
             - run: yarn test
+    publish:
+        executor: default
+        steps:
+            - npm_install
+            - run: npm -v
 workflows:
     version: 2
     productionflow:
         jobs:
-            - prod-deploy:
+            - publish:
                 context: heroku
+                requires:
+                    - test
                 filters:
                     branches:
                         only:
