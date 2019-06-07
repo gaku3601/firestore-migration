@@ -4,6 +4,8 @@ executors:
         docker:
             - image: circleci/node:8.16
         working_directory: ~/repo
+commands:
+    npm_install:
         steps:
             - checkout
             - restore_cache:
@@ -19,6 +21,7 @@ jobs:
     prod-deploy:
         executor: default
         steps:
+            - npm_install
             - run: yarn test
 workflows:
     version: 2
