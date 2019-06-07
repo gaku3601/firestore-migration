@@ -17,6 +17,9 @@ commands:
                 paths:
                     - node_modules
                 key: v1-dependencies-{{ checksum "package.json" }}
+    tool_install:
+        steps:
+            - run: sudo npm i -g can-npm-publish
 jobs:
     test:
         executor: default
@@ -26,20 +29,29 @@ jobs:
     publish:
         executor: default
         steps:
+            - tool_install
             - npm_install
             - run: yarn build
+            - run: echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+            - run:
+                command: |
+                    if can-npm-publish; then
+                        npm publish
+                    else
+                        echo "publish skipped"
+                    fi
 workflows:
     version: 2
-    productionflow:
+    publishflow:
         jobs:
             - test:
-                context: heroku
+                context: npm
                 filters:
                     branches:
                         only:
                             - master
             - publish:
-                context: heroku
+                context: npm
                 requires:
                     - test
                 filters:
