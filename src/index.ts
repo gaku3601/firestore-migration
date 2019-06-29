@@ -1,5 +1,6 @@
 import * as commanders from 'commander';
-import fileOperation from './FileOperation';
+import migrate from '@/usecase/migrate/Index';
+import fileOperation from '@/usecase/FileOperation';
 commanders
   .version('0.0.1', '-v, --version')
   .option('-t, --test', 'test option')
@@ -11,6 +12,6 @@ if (commanders.create) {
   c.createFile(commanders.opts().create);
 }
 if (commanders.migrate) {
-  const f = new fileOperation();
+  const f = new migrate();
   f.migrate(commanders.opts().migrate);
 }
